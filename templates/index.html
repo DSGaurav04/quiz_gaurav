@@ -1,20 +1,31 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz</title>
+</head>
+<body>
+    <h1>Quiz</h1>
+    <form id="quiz-form">
+        <label for="question">Question:</label>
+        <input type="text" id="question" name="question">
+        <br>
+        <label for="answer">Your Answer:</label>
+        <input type="text" id="answer" name="answer">
+        <br>
+        <input type="submit" value="Check Answer">
+    </form>
+    <p id="result"></p>
 
-{% block head %}
-
-<title>Search Page</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-{% endblock %}
-
-{% block body %}
-<div class="content">
-    <h1 style="text-align: center">Search</h1>
-
-    <div class="form">
-        <form action="/review" method="POST">
-            <input type="text" name="content" id="content">
-            <input type="submit" value="Search">
-        </form>
-    </div>
-</div>
-{% endblock %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#quiz-form").submit(function (e) {
+                e.preventDefault();
+                $.post("/check_answer", $(this).serialize(), function (data) {
+                    $("#result").text("Correct Answer: " + data.correct_answer);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
